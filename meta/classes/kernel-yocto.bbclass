@@ -200,7 +200,7 @@ do_kernel_metadata() {
 		# src_uri, so this can be an empty variable.
 		sccs_defconfig=$src_uri_defconfig
 	fi
-	sccs="$sccs_from_src_uri"
+	sccs="$sccs_defconfig"
 
 	# check for feature directories/repos/branches that were part of the
 	# SRC_URI. If they were supplied, we convert them into include directives
@@ -443,7 +443,8 @@ do_kernel_configme() {
 	cd ${S}
 
 	meta_dir=$(kgit --meta)
-	configs="$(scc --configs -o ${meta_dir})"
+	bbnote "$META_DIR!!!: {meta_dir}"
+	configs="$(scc --configs -v -o ${meta_dir})"
 	if [ $? -ne 0 ]; then
 		bberror "${configs}"
 		bbfatal_log "Could not find configuration queue (${meta_dir}/config.queue)"
